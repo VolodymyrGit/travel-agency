@@ -14,17 +14,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class WebAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        SecurityUserDetails securityUserDetails = userDetailsService.loadUserByUsername(username);
 
-        if (passwordEncoder.matches(password, userDetails.getPassword())) {
-            return new WebAuthenticationToken(userDetails);
+        if (passwordEncoder.matches(password, securityUserDetails.getPassword())) {
+            return new WebAuthenticationToken(securityUserDetails);
         }
         return null;
     }

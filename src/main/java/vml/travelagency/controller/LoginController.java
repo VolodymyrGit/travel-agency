@@ -3,20 +3,26 @@ package vml.travelagency.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import vml.travelagency.security.JwtUtil;
+import vml.travelagency.dto.LoginDto;
+import vml.travelagency.security.JwtProvider;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final JwtUtil jwtUtil;
+    private final JwtProvider jwtUtil;
 
     @PostMapping
-    public
+    public ResponseEntity<String> login(@RequestBody @Valid LoginDto loginDto) {
+
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 
 //    @GetMapping("/login")
 //    public ResponseEntity<String> login() {

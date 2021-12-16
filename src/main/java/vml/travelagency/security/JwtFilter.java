@@ -1,14 +1,11 @@
 package vml.travelagency.security;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -19,38 +16,28 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final WebAuthenticationProvider jwtProvider;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
-
-    Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        logger.debug("Filter run");
+        log.info("Filter run");
 
-        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (!StringUtils.hasText(header) && !header.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+        final String token = jwtUtil.getTokenFromRequest(request);
+
+        if (token != null && jwtUtil.validateToken(token)) {
+            String userLogin = jwtUtil.getUsernameFromToken(token);
+            SecurityUserDetails securityUserDetails = userDetailsService.loadUserByUsername(userLogin);
+            securityUserDetails.setExpirationDate(jwtUtil.getExpirationDateFromToken(token));
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(userLogin, null, securityUserDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
-        final String token = header.substring(7);
-        if (!jwtUtil.validateToken(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String userLogin = jwtUtil.getLoginPasswordFromToken(token).getCardNumber();
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userLogin);
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-
         filterChain.doFilter(request, response);
     }
 }
