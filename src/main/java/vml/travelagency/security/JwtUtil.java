@@ -10,7 +10,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.function.Function;
@@ -25,21 +29,6 @@ public class JwtUtil implements Serializable {
     private int JWT_TOKEN_VALID_HOURS;
     @Value("${spring.security.jwt.valid-days}")
     private int JWT_TOKEN_VALID_DAYS;
-    private final String AUTHORIZATION = HttpHeaders.AUTHORIZATION;
-    private final String BEARER = "Bearer ";
-
-    public String getTokenFromRequest(HttpServletRequest request) {
-        String authString = request.getHeader(AUTHORIZATION);
-        if (StringUtils.hasText(authString)) {
-            if (authString.startsWith(BEARER)) {
-                return authString.substring(7);
-            }
-            log.info("authString didn'tstart with \"Bearer \"");
-            return null;
-        }
-        log.info("StringUtils.hasText(authString) - failed");
-        return null;
-    }
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
@@ -68,12 +57,12 @@ public class JwtUtil implements Serializable {
     }
 
     //generate token for user
-    public String generateToken(String email, String role, int validDays, int validHours) {
+    public String generateToken(String email, String role) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
 
         Date newTokenDate = new Date();
-        Date expirationDate = new DateTime().plusDays(validDays).plusHours(validHours).toDate();
+        Date expirationDate = new DateTime().plusDays(JWT_TOKEN_VALID_DAYS).plusHours(JWT_TOKEN_VALID_HOURS).toDate();
 
         return Jwts.builder()
                 .setClaims(claims)

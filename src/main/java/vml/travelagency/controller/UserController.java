@@ -1,20 +1,33 @@
 package vml.travelagency.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vml.travelagency.dto.request.RegisterUserRequestDto;
+import vml.travelagency.service.UserService;
+
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping("hello")
+@RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @GetMapping("user")
-    public String helloUser() {
-        return "Hello User!";
-    }
+    private final UserService userService;
 
-    @GetMapping("admin")
-    public String helloAdmin() {
-        return "Hello Admin!";
+    @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
+    @PostMapping("/create")
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid RegisterUserRequestDto userDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        userService.registerUser(userDto);
+        return ResponseEntity.ok().build();
     }
 }

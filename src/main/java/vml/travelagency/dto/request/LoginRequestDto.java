@@ -1,4 +1,4 @@
-package vml.travelagency.dto;
+package vml.travelagency.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class LoginDto {
+public class LoginRequestDto {
 
     @NotNull
     @Pattern(regexp = "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}",

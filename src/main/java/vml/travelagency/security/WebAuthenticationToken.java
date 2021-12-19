@@ -1,36 +1,38 @@
 package vml.travelagency.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@RequiredArgsConstructor
 public class WebAuthenticationToken implements Authentication {
 
-    private final UserDetails userDetails;
+    private SecurityUserDetails securityUserDetails;
     private boolean isAuthenticated;
+
+    public WebAuthenticationToken(SecurityUserDetails securityUserDetails) {
+        this.securityUserDetails = securityUserDetails;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userDetails.getAuthorities();
+        return securityUserDetails.getAuthorities();
     }
 
     @Override
     public Object getCredentials() {
-        return userDetails.getPassword();
+        return securityUserDetails.getPassword();
     }
 
     @Override
     public Object getDetails() {
-        return userDetails;
+        return securityUserDetails;
     }
 
     @Override
     public Object getPrincipal() {
-        return userDetails.getUsername();
+        return securityUserDetails.getUsername();
     }
 
     @Override
@@ -45,6 +47,6 @@ public class WebAuthenticationToken implements Authentication {
 
     @Override
     public String getName() {
-        return userDetails.getUsername();
+        return securityUserDetails.getUsername();
     }
 }

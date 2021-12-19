@@ -1,6 +1,7 @@
 package vml.travelagency.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,13 +12,19 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
+@Slf4j
 public class WebAuthenticationManager implements AuthenticationManager {
 
-    private final List<AuthenticationProvider> authenticationProviders;
+    private List<AuthenticationProvider> authenticationProviders;
+
+    @Autowired
+    public void setAuthenticationProviders(List<AuthenticationProvider> authenticationProviders) {
+        this.authenticationProviders = authenticationProviders;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) {
+        log.info("WebAuthenticationManager is running");
         Authentication webAuthentication;
         for (AuthenticationProvider authenticationProvider : authenticationProviders) {
             webAuthentication = authenticationProvider.authenticate(authentication);
