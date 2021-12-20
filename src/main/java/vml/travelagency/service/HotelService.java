@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface HotelService {
 
-    List<HotelResponseDto> getAllHotelsByCountryName(String countryName);
+    List<HotelResponseDto> getAllHotelResponseDtoByCountryName(String countryName);
 }

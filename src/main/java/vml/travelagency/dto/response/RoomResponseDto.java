@@ -1,11 +1,10 @@
 package vml.travelagency.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import vml.travelagency.model.Room;
 
 import java.math.BigDecimal;
 
@@ -13,13 +12,12 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class RoomResponseDto {
 
-    private String hotelName;
-
-    private long roomNumber;
-
+    private String roomType;
     private BigDecimal roomPrice;
+
+    public static RoomResponseDto toDto(Room room) {
+        return new RoomResponseDto(room.getRoomType().name(), room.getRoomPrice());
+    }
 }
