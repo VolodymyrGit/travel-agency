@@ -14,13 +14,13 @@ INSERT INTO country (id, name) VALUES (7, 'Ukraine');
 INSERT INTO hotel (id, hotel_name, country_id) VALUES (8, 'Super Mega Grand Hotel', 7);
 INSERT INTO hotel (id, hotel_name, country_id) VALUES (9, 'Mega Grand Hotel', 7);
 
-INSERT INTO room (id, hotel_id, room_number, room_type, is_available, room_prise)
-VALUES (5, 8, 1, 'STANDARD', true, 100);
-INSERT INTO room (id, hotel_id, room_number, room_type, is_available, room_prise)
-VALUES (6, 8, 2, 'SUPERIOR', true, 200);
-INSERT INTO room (id, hotel_id, room_number, room_type, is_available, room_prise)
-VALUES (7, 8, 3, 'LUX', true, 500);
-INSERT INTO room (id, hotel_id, room_number, room_type, is_available, room_prise)
-VALUES (8, 9, 1, 'STANDARD', true, 100);
-INSERT INTO room (id, hotel_id, room_number, room_type, is_available, room_prise)
-VALUES (9, 9, 2, 'SUPERIOR', true, 200);
+INSERT INTO room (id, hotel_id, room_number, room_type, room_prise)
+VALUES (5, 8, 1, 'STANDARD', 100);
+INSERT INTO room (id, hotel_id, room_number, room_type, room_prise)
+VALUES (6, 8, 2, 'SUPERIOR', 200);
+INSERT INTO room (id, hotel_id, room_number, room_type, room_prise)
+VALUES (7, 8, 3, 'LUX', 500);
+INSERT INTO room (id, hotel_id, room_number, room_type, room_prise)
+VALUES (8, 9, 1, 'STANDARD', 100);
+INSERT INTO room (id, hotel_id, room_number, room_type, room_prise)
+VALUES (9, 9, 2, 'SUPERIOR', 200);
