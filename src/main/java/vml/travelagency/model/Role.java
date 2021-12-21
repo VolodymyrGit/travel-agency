@@ -1,7 +1,9 @@
 package vml.travelagency.model;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,9 +18,11 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
+@Table(name = "roles")
 @Getter
 @Setter
-@Table(name = "roles")
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Role implements GrantedAuthority {

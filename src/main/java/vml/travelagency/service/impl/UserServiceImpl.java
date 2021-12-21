@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public User registerUser(RegisterUserRequestDto userDto) {
         User user = User.builder()
@@ -35,8 +34,6 @@ public class UserServiceImpl implements UserService {
         create(user);
         return user;
     }
-
-
 
     @Override
     public User create(User user) {

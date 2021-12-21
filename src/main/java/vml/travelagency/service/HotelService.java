@@ -9,5 +9,4 @@ public interface HotelService {
 
     Hotel getByHotelName(String hotelName);
     List<Hotel> getAllByCountryName(String countryName);
-    List<HotelResponseDto> getAllHotelResponseDtoByCountryName(String countryName);
 }

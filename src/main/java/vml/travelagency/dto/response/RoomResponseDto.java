@@ -1,6 +1,7 @@
 package vml.travelagency.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +13,18 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RoomResponseDto {
 
+    private Long roomNumber;
     private String roomType;
     private BigDecimal roomPrice;
 
     public static RoomResponseDto toDto(Room room) {
-        return new RoomResponseDto(room.getRoomType().name(), room.getRoomPrice());
+        return RoomResponseDto.builder()
+                .roomNumber(room.getRoomNumber().getNumber())
+                .roomType(room.getRoomType().name())
+                .roomPrice(room.getRoomPrice())
+                .build();
     }
 }

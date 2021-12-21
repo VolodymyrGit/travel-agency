@@ -23,10 +23,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid RegisterUserRequestDto userDto, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<HttpStatus> create(@Valid @RequestBody RegisterUserRequestDto userDto, BindingResult result) {
         userService.registerUser(userDto);
         return ResponseEntity.ok().build();
     }

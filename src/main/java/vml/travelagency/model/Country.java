@@ -1,7 +1,11 @@
 package vml.travelagency.model;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+@Entity
 @Setter
 @Getter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Country {
 
     @Id

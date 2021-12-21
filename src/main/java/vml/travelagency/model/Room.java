@@ -1,7 +1,11 @@
 package vml.travelagency.model;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,16 +17,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.List;
 
+@Entity
 @Setter
 @Getter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Room {
 
     @Id
@@ -33,8 +37,9 @@ public class Room {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @Column(name = "room_number", nullable = false)
-    private long roomNumber;
+    @ManyToOne
+    @JoinColumn(name = "number_id", nullable = false)
+    private RoomNumber roomNumber;
 
     @Column(name = "room_type")
     @Enumerated(EnumType.STRING)
@@ -47,7 +52,7 @@ public class Room {
     private BigDecimal roomPrice;
 
     @OneToMany(mappedBy = "room")
-    private List<BookingPeriod> bookingPeriod;
+    private List<BookingPeriod> bookingPeriods;
 
     @ManyToOne
     @JoinColumn(name = "tenant_id")
