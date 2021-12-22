@@ -13,19 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 import vml.travelagency.dto.request.BookingAvailableRequestDto;
 import vml.travelagency.dto.request.BookingRequestDto;
 import vml.travelagency.dto.request.CountryRequestDto;
+import vml.travelagency.dto.request.HotelRequestDto;
 import vml.travelagency.dto.response.CountryResponseDto;
 import vml.travelagency.dto.response.HotelResponseDto;
 import vml.travelagency.dto.response.RoomResponseDto;
 import vml.travelagency.model.BookingPeriod;
+import vml.travelagency.model.Country;
 import vml.travelagency.model.Hotel;
 import vml.travelagency.model.Room;
 import vml.travelagency.model.RoomNumber;
 import vml.travelagency.service.BookingPeriodService;
+import vml.travelagency.service.CountryService;
 import vml.travelagency.service.HotelService;
 import vml.travelagency.service.RoomNumberService;
 import vml.travelagency.service.RoomService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,12 +39,24 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HotelController {
 
+    private final CountryService countryService;
     private final HotelService hotelService;
     private final RoomService roomService;
     private final BookingPeriodService bookingService;
     private final RoomNumberService roomNumberService;
 
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @PostMapping("/create")
+    public ResponseEntity<HotelResponseDto> createHotel(
+            @Valid @RequestBody HotelRequestDto requestDto) {
+
+        Country country = countryService.getCountryByName(requestDto.getCountryName());
+        Hotel hotel = hotelService.createFromCountryAndHotelRequestDto(country, requestDto.getHotelName());
+        HotelResponseDto responseDto = new HotelResponseDto(hotel.getHotelName(), new ArrayList<>());
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('USER')")
     @GetMapping("/all/country/find")
     public ResponseEntity<CountryResponseDto> findAllHotelsInCountry(
             @Valid @RequestBody CountryRequestDto requestDto) {
@@ -55,11 +71,11 @@ public class HotelController {
                 })
                 .collect(Collectors.toList());
 
-        CountryResponseDto countryResponseDto = new CountryResponseDto(hotelResponseDtos);
+        CountryResponseDto countryResponseDto = new CountryResponseDto(requestDto.getCountryName(), hotelResponseDtos);
         return ResponseEntity.ok(countryResponseDto);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('USER')")
     @GetMapping("/rooms/available")
     public ResponseEntity<HotelResponseDto> findAllAvailableRoomsForPeriod(
             @Valid @RequestBody BookingAvailableRequestDto requestDto) {
@@ -73,7 +89,7 @@ public class HotelController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('USER')")
     @PostMapping("/room/available/book")
     public ResponseEntity<HttpStatus> bookAvailableRoom(@RequestBody @Valid BookingRequestDto requestDto) {
 

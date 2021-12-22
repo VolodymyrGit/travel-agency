@@ -26,7 +26,7 @@ public class LoginController {
     private final JwtUtil jwtUtil;
     private final WebAuthenticationManager authenticationManager;
 
-    @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
+    @PreAuthorize("hasAuthority('MANAGER') or isAnonymous()")
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(
             @RequestBody @Valid LoginRequestDto loginDto

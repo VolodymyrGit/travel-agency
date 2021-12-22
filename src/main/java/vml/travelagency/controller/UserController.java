@@ -15,13 +15,13 @@ import vml.travelagency.service.UserService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
+    @PreAuthorize("hasAuthority('MANAGER') or isAnonymous()")
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> create(@Valid @RequestBody RegisterUserRequestDto userDto, BindingResult result) {
         userService.registerUser(userDto);

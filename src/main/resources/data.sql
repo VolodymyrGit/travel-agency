@@ -1,4 +1,4 @@
-INSERT INTO roles (id, role_name) VALUES (1, 'ADMIN');
+INSERT INTO roles (id, role_name) VALUES (1, 'MANAGER');
 INSERT INTO roles (id, role_name) VALUES (2, 'USER');
 
 INSERT INTO room_number (id, number) VALUES (1, 1);
