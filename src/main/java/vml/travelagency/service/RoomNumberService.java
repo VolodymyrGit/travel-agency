@@ -4,5 +4,5 @@ import vml.travelagency.model.RoomNumber;
 
 public interface RoomNumberService {
 
-    RoomNumber getById(Long id);
+    RoomNumber getByNumber(Long roomNumber);
 }

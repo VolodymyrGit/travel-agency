@@ -94,7 +94,7 @@ public class HotelController {
     public ResponseEntity<HttpStatus> bookAvailableRoom(@RequestBody @Valid BookingRequestDto requestDto) {
 
         Hotel hotel = hotelService.getByHotelName(requestDto.getHotelName());
-        RoomNumber roomNumber = roomNumberService.getById(requestDto.getRoomNumber());
+        RoomNumber roomNumber = roomNumberService.getByNumber(requestDto.getRoomNumber());
         Room room = roomService.getByHotelAndRoomNumber(hotel, roomNumber);
         List<BookingPeriod> bookingPeriods = bookingService.getAllByRoom(room);
         boolean isAvailable = roomService

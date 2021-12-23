@@ -23,7 +23,7 @@ public class CountryServiceImpl implements CountryService {
     public Country create(Country country) {
         if (country == null) {
             log.error("Method create, country parameter - 'null'");
-            throw new NullEntityReferenceException("Method create - country parameter can't be 'null'");
+            throw new NullEntityReferenceException("country parameter can't be 'null'");
         }
         return countryRepo.save(country);
     }

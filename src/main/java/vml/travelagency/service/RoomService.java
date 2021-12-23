@@ -5,11 +5,20 @@ import vml.travelagency.model.BookingPeriod;
 import vml.travelagency.model.Hotel;
 import vml.travelagency.model.Room;
 import vml.travelagency.model.RoomNumber;
+import vml.travelagency.model.RoomType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomService {
+
+    Room create(Room room);
+
+    Room createFromHotelRoomNumberRoomTypeRoomPrice(Hotel hotel,
+                                                    RoomNumber roomNumber,
+                                                    RoomType roomType,
+                                                    BigDecimal roomPrice);
 
     List<Room> getAllRoomsByHotel(Hotel hotel);
 

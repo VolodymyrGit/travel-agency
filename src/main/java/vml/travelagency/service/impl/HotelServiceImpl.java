@@ -40,9 +40,9 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Hotel getByHotelName(String hotelName) {
-        if (hotelName == null) throw new NullEntityReferenceException();
         return hotelRepo.findByHotelName(hotelName)
-                .orElseThrow(() -> new EntityNotFoundException("Can't find Hotel by this hotelName" + hotelName));
+                .orElseThrow(() -> new EntityNotFoundException(String
+                        .format("Can't find Hotel by this hotelName %s", hotelName)));
     }
 
     @Override
