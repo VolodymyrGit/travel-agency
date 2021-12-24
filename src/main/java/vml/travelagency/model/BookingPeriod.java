@@ -33,18 +33,20 @@ public class BookingPeriod {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Temporal(TemporalType.DATE)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
     @Column(name = "booking_day")
     private LocalDate bookingDay;
 
-//    @Temporal(TemporalType.DATE)
     @Column(name = "end_booking_day")
     private LocalDate endBookingDay;
 
     @Column(name = "is_active")
     private Boolean isActive;
-
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
 }

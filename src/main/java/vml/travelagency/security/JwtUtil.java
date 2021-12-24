@@ -57,8 +57,9 @@ public class JwtUtil implements Serializable {
     }
 
     //generate token for user
-    public String generateToken(String email, String role) {
+    public String generateToken(String email, String role, Long id) {
         Claims claims = Jwts.claims().setSubject(email);
+        claims.put("userId", id);
         claims.put("role", role);
 
         Date newTokenDate = new Date();

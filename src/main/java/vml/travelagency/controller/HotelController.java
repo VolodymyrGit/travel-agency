@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import vml.travelagency.dto.request.BookingAvailableRequestDto;
 import vml.travelagency.dto.request.BookingRequestDto;
 import vml.travelagency.dto.request.CountryRequestDto;
 import vml.travelagency.dto.request.HotelRequestDto;
+import vml.travelagency.dto.response.BookingResponseDto;
 import vml.travelagency.dto.response.CountryResponseDto;
 import vml.travelagency.dto.response.HotelResponseDto;
 import vml.travelagency.dto.response.RoomResponseDto;
@@ -22,11 +24,13 @@ import vml.travelagency.model.Country;
 import vml.travelagency.model.Hotel;
 import vml.travelagency.model.Room;
 import vml.travelagency.model.RoomNumber;
+import vml.travelagency.model.User;
 import vml.travelagency.service.BookingPeriodService;
 import vml.travelagency.service.CountryService;
 import vml.travelagency.service.HotelService;
 import vml.travelagency.service.RoomNumberService;
 import vml.travelagency.service.RoomService;
+import vml.travelagency.service.UserService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ public class HotelController {
     private final RoomService roomService;
     private final BookingPeriodService bookingService;
     private final RoomNumberService roomNumberService;
+    private final UserService userService;
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/create")
@@ -91,7 +96,10 @@ public class HotelController {
 
     @PreAuthorize("hasAuthority('MANAGER') or hasAuthority('USER')")
     @PostMapping("/room/available/book")
-    public ResponseEntity<HttpStatus> bookAvailableRoom(@RequestBody @Valid BookingRequestDto requestDto) {
+    public ResponseEntity<BookingResponseDto> bookAvailableRoom(@RequestBody @Valid BookingRequestDto requestDto) {
+
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = userService.getByEmail(userEmail);
 
         Hotel hotel = hotelService.getByHotelName(requestDto.getHotelName());
         RoomNumber roomNumber = roomNumberService.getByNumber(requestDto.getRoomNumber());
@@ -100,8 +108,9 @@ public class HotelController {
         boolean isAvailable = roomService
                 .checkIfRoomAvailableForBook(bookingPeriods, requestDto.getBeginDay(), requestDto.getEndDay());
         if (isAvailable) {
-            bookingService.createFromRoomAndRequestDto(room, requestDto);
-            return ResponseEntity.ok().build();
+            BookingPeriod period = bookingService.createFromUserRoomAndRequestDto(user, room, requestDto);
+
+            return ResponseEntity.ok(BookingResponseDto.toDto(period));
         }
         log.error("bookAvailableRoom : room wasn't booked");
         return ResponseEntity.badRequest().build();

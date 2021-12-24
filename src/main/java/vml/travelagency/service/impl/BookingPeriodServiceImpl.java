@@ -7,6 +7,7 @@ import vml.travelagency.dto.request.BookingRequestDto;
 import vml.travelagency.exceptions.NullEntityReferenceException;
 import vml.travelagency.model.BookingPeriod;
 import vml.travelagency.model.Room;
+import vml.travelagency.model.User;
 import vml.travelagency.repository.BookingPeriodRepo;
 import vml.travelagency.service.BookingPeriodService;
 
@@ -30,11 +31,12 @@ public class BookingPeriodServiceImpl implements BookingPeriodService {
     }
 
     @Override
-    public BookingPeriod createFromRoomAndRequestDto(Room room, BookingRequestDto requestDto) {
+    public BookingPeriod createFromUserRoomAndRequestDto(User user, Room room, BookingRequestDto requestDto) {
         BookingPeriod bookingPeriod = BookingPeriod.builder()
+                .user(user)
+                .room(room)
                 .bookingDay(requestDto.getBeginDay())
                 .endBookingDay(requestDto.getEndDay())
-                .room(room)
                 .isActive(true)
                 .build();
         return create(bookingPeriod);

@@ -13,6 +13,7 @@ import java.util.Date;
 @Component
 public class SecurityUserDetails implements UserDetails {
 
+    private Long id;
     private String login;
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
@@ -20,11 +21,16 @@ public class SecurityUserDetails implements UserDetails {
 
     public static SecurityUserDetails fromUserToSecurityUserDetails(User user) {
         SecurityUserDetails userDetails = new SecurityUserDetails();
+        userDetails.id = user.getId();
         userDetails.login = user.getEmail();
         userDetails.password = user.getPassword();
         userDetails.grantedAuthorities = Collections
                 .singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
         return userDetails;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Date getExpirationDate() {

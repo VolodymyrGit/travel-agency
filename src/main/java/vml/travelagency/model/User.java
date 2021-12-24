@@ -53,8 +53,10 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "tenant")
-    @Column(name = "rooms")
     private List<Room> rooms;
+
+    @OneToMany(mappedBy = "user")
+    private List<BookingPeriod> bookingPeriods;
 
     @ManyToMany
     @JoinTable(name = "user_hotel",

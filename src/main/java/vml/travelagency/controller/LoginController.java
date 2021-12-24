@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vml.travelagency.dto.request.LoginRequestDto;
 import vml.travelagency.dto.response.TokenResponse;
 import vml.travelagency.security.JwtUtil;
+import vml.travelagency.security.SecurityUserDetails;
 import vml.travelagency.security.WebAuthenticationManager;
 
 import javax.validation.Valid;
@@ -29,28 +30,18 @@ public class LoginController {
     @PreAuthorize("hasAuthority('MANAGER') or isAnonymous()")
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(
-            @RequestBody @Valid LoginRequestDto loginDto
-//            @RequestParam(value = "email", required = true)
-//            String email,
-//            @RequestParam(value = "password", required = true)
-//            String password
-    ) {
+            @RequestBody @Valid LoginRequestDto loginDto) {
+
         log.info("Login controller is running");
-
-//        String username = loginDto.getEmail();
-//        username = username != null ? username : "";
-//        username = username.trim();
-//        String password = loginDto.getPassword();
-//        password = password != null ? password : "";
-
         Authentication authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
         if (authentication != null && authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityUserDetails details = (SecurityUserDetails) authentication.getDetails();
             String role = authentication.getAuthorities().stream().findAny().get().getAuthority();
-            String token = jwtUtil.generateToken(loginDto.getEmail(), role);
+            String token = jwtUtil.generateToken(loginDto.getEmail(), role, details.getId());
             return ResponseEntity.ok(new TokenResponse(token));
         }
         SecurityContextHolder.clearContext();
