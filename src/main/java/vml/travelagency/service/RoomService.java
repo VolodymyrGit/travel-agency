@@ -22,8 +22,6 @@ public interface RoomService {
 
     List<Room> getAllRoomsByHotel(Hotel hotel);
 
-    List<RoomResponseDto> roomsToRoomResponseDtos(List<Room> rooms);
-
     List<Room> getAllAvailableRooms(List<Room> rooms, LocalDate beginDay , LocalDate endDay);
 
     boolean checkIfRoomAvailableForBook(List<BookingPeriod> bookingPeriods, LocalDate beginDay, LocalDate endDay);

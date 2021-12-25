@@ -57,11 +57,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomResponseDto> roomsToRoomResponseDtos(List<Room> rooms) {
-        return rooms.stream().map(RoomResponseDto::toDto).collect(Collectors.toList());
-    }
-
-    @Override
     public List<Room> getAllAvailableRooms(List<Room> rooms,
                                            LocalDate beginDay,
                                            LocalDate endDay) {

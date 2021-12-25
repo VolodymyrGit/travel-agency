@@ -71,11 +71,12 @@ public class HotelController {
         List<HotelResponseDto> hotelResponseDtos = countryHotels.stream()
                 .map(hotel -> {
                     List<Room> hotelRooms = roomService.getAllRoomsByHotel(hotel);
-                    List<RoomResponseDto> roomResponseDtos = roomService.roomsToRoomResponseDtos(hotelRooms);
-                    return new HotelResponseDto(hotel.getHotelName(), roomResponseDtos);
+                    List<RoomResponseDto> responseDtos = hotelRooms.stream()
+                            .map(RoomResponseDto::toDto)
+                            .collect(Collectors.toList());
+                    return new HotelResponseDto(hotel.getHotelName(), responseDtos);
                 })
                 .collect(Collectors.toList());
-
         CountryResponseDto countryResponseDto = new CountryResponseDto(requestDto.getCountryName(), hotelResponseDtos);
         return ResponseEntity.ok(countryResponseDto);
     }
@@ -89,7 +90,9 @@ public class HotelController {
         List<Room> hotelRooms = roomService.getAllRoomsByHotel(hotel);
         List<Room> availableRooms = roomService
                 .getAllAvailableRooms(hotelRooms, requestDto.getBeginDay(), requestDto.getEndDay());
-        List<RoomResponseDto> roomResponseDtos = roomService.roomsToRoomResponseDtos(availableRooms);
+        List<RoomResponseDto> roomResponseDtos = availableRooms.stream()
+                .map(RoomResponseDto::toDto)
+                .collect(Collectors.toList());
         HotelResponseDto responseDto = new HotelResponseDto(requestDto.getHotelName(), roomResponseDtos);
         return ResponseEntity.ok(responseDto);
     }

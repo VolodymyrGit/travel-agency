@@ -28,15 +28,14 @@ public class UserResponseDto {
     private List<BookingResponseDto> bookingPeriods;
 
     public static UserResponseDto toDto(User user) {
-        return UserResponseDto.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .role(user.getRole().getName())
-                .bookingPeriods(user.getBookingPeriods()
-                        .stream()
-                        .map(BookingResponseDto::toDto)
-                        .collect(Collectors.toList()))
-                .build();
+        UserResponseDto responseDto = new UserResponseDto();
+        responseDto.setFirstName(user.getFirstName());
+        responseDto.setLastName(user.getLastName());
+        responseDto.setEmail(user.getEmail());
+        responseDto.setBookingPeriods(user.getBookingPeriods()
+                .stream()
+                .map(BookingResponseDto::toDto)
+                .collect(Collectors.toList()));
+        return responseDto;
     }
 }

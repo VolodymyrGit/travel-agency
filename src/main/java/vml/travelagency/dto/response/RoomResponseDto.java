@@ -22,11 +22,11 @@ public class RoomResponseDto {
     private BigDecimal roomPrice;
 
     public static RoomResponseDto toDto(Room room) {
-        return RoomResponseDto.builder()
-                .hotelName(room.getHotel().getHotelName())
-                .roomNumber(room.getRoomNumber().getNumber())
-                .roomType(room.getRoomType().name())
-                .roomPrice(room.getRoomPrice())
-                .build();
+        RoomResponseDto responseDto = new RoomResponseDto();
+        responseDto.setHotelName(room.getHotel().getHotelName());
+        responseDto.setRoomNumber(room.getRoomNumber().getNumber());
+        responseDto.setRoomType(room.getRoomType().name());
+        responseDto.setRoomPrice(room.getRoomPrice());
+        return responseDto;
     }
 }
