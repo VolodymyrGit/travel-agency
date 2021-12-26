@@ -52,15 +52,6 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "tenant")
-    private List<Room> rooms;
-
     @OneToMany(mappedBy = "user")
     private List<BookingPeriod> bookingPeriods;
-
-    @ManyToMany
-    @JoinTable(name = "user_hotel",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "hotel_id"))
-    private List<Hotel> hotels;
 }

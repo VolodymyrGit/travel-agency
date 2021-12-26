@@ -5,10 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vml.travelagency.model.BookingPeriod;
-import vml.travelagency.model.Hotel;
-import vml.travelagency.model.Role;
-import vml.travelagency.model.Room;
 import vml.travelagency.model.User;
 
 import java.util.List;
@@ -32,6 +28,7 @@ public class UserResponseDto {
         responseDto.setFirstName(user.getFirstName());
         responseDto.setLastName(user.getLastName());
         responseDto.setEmail(user.getEmail());
+        responseDto.setRole(user.getRole().getName());
         responseDto.setBookingPeriods(user.getBookingPeriods()
                 .stream()
                 .map(BookingResponseDto::toDto)

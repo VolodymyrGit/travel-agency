@@ -12,10 +12,8 @@ import vml.travelagency.dto.request.RoomRequestDto;
 import vml.travelagency.dto.response.RoomResponseDto;
 import vml.travelagency.model.Hotel;
 import vml.travelagency.model.Room;
-import vml.travelagency.model.RoomNumber;
 import vml.travelagency.model.RoomType;
 import vml.travelagency.service.HotelService;
-import vml.travelagency.service.RoomNumberService;
 import vml.travelagency.service.RoomService;
 
 import javax.validation.Valid;
@@ -27,7 +25,6 @@ import javax.validation.Valid;
 public class RoomController {
 
     private final HotelService hotelService;
-    private final RoomNumberService roomNumberService;
     private final RoomService roomService;
 
     @PreAuthorize("hasAuthority('MANAGER')")
@@ -35,12 +32,8 @@ public class RoomController {
     public ResponseEntity<RoomResponseDto> createCountry(@Valid @RequestBody RoomRequestDto requestDto) {
 
         Hotel hotel = hotelService.getByHotelName(requestDto.getHotelName());
-        RoomNumber roomNumber = roomNumberService.getByNumber(requestDto.getRoomNumber());
-        RoomType roomType = RoomType.valueOf(requestDto.getRoomType());
-        Room room = roomService.createFromHotelRoomNumberRoomTypeRoomPrice(hotel,
-                roomNumber,
-                roomType,
-                requestDto.getRoomPrice());
+        hotelService.checkIfRoomNumberNotExist(hotel, requestDto.getRoomNumber());
+        Room room = roomService.createFromHotelAndRoomRequestDto(hotel, requestDto);
         RoomResponseDto responseDto = RoomResponseDto.toDto(room);
         log.info("New Room was created");
         return ResponseEntity.ok(responseDto);

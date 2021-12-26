@@ -3,18 +3,16 @@ package vml.travelagency.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import vml.travelagency.dto.response.RoomResponseDto;
+import vml.travelagency.dto.request.RoomRequestDto;
 import vml.travelagency.exceptions.NullEntityReferenceException;
 import vml.travelagency.model.BookingPeriod;
 import vml.travelagency.model.Hotel;
 import vml.travelagency.model.Room;
-import vml.travelagency.model.RoomNumber;
 import vml.travelagency.model.RoomType;
 import vml.travelagency.repository.RoomRepo;
 import vml.travelagency.service.RoomService;
 
 import javax.persistence.EntityNotFoundException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +35,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room createFromHotelRoomNumberRoomTypeRoomPrice(Hotel hotel,
-                                                           RoomNumber roomNumber,
-                                                           RoomType roomType,
-                                                           BigDecimal roomPrice) {
+    public Room createFromHotelAndRoomRequestDto(Hotel hotel, RoomRequestDto requestDto) {
         Room room = Room.builder()
                 .hotel(hotel)
-                .roomNumber(roomNumber)
-                .roomType(roomType)
-                .roomPrice(roomPrice)
+                .roomNumber(requestDto.getRoomNumber())
+                .roomType(RoomType.valueOf(requestDto.getRoomType()))
+                .roomPrice(requestDto.getRoomPrice())
                 .bookingPeriods(new ArrayList<>())
                 .build();
         return create(room);
@@ -80,7 +75,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room getByHotelAndRoomNumber(Hotel hotel, RoomNumber roomNumber) {
+    public Room getByHotelAndRoomNumber(Hotel hotel, Long roomNumber) {
         return roomRepo.findByHotelAndRoomNumber(hotel, roomNumber)
                 .orElseThrow(() -> new EntityNotFoundException(String
                         .format("Can't find Room with this Hotel - %s, RoomNumber - %s", hotel, roomNumber)));

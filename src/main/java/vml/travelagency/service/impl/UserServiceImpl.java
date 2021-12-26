@@ -38,8 +38,6 @@ public class UserServiceImpl implements UserService {
                 .email(userDto.getEmail())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .role(roleRepo.getById(2L))
-                .hotels(new ArrayList<>())
-                .rooms(new ArrayList<>())
                 .build();
         create(user);
         return user;

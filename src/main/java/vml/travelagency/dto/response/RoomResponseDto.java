@@ -24,7 +24,7 @@ public class RoomResponseDto {
     public static RoomResponseDto toDto(Room room) {
         RoomResponseDto responseDto = new RoomResponseDto();
         responseDto.setHotelName(room.getHotel().getHotelName());
-        responseDto.setRoomNumber(room.getRoomNumber().getNumber());
+        responseDto.setRoomNumber(room.getRoomNumber());
         responseDto.setRoomType(room.getRoomType().name());
         responseDto.setRoomPrice(room.getRoomPrice());
         return responseDto;

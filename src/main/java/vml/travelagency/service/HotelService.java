@@ -14,4 +14,6 @@ public interface HotelService {
     Hotel getByHotelName(String hotelName);
 
     List<Hotel> getAllByCountryName(String countryName);
+
+    boolean checkIfRoomNumberNotExist(Hotel hotel, Long roomNumber);
 }

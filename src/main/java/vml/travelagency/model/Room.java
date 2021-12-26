@@ -39,11 +39,10 @@ public class Room {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @ManyToOne
-    @JoinColumn(name = "number_id", nullable = false)
-    private RoomNumber roomNumber;
+    @Column(name = "room_number", nullable = false)
+    private Long roomNumber;
 
-    @Column(name = "room_type")
+    @Column(name = "room_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
@@ -52,8 +51,4 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private List<BookingPeriod> bookingPeriods;
-
-    @ManyToOne
-    @JoinColumn(name = "tenant_id")
-    private User tenant;
 }

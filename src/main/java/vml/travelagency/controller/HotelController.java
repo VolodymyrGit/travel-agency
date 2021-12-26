@@ -2,7 +2,6 @@ package vml.travelagency.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,12 +22,10 @@ import vml.travelagency.model.BookingPeriod;
 import vml.travelagency.model.Country;
 import vml.travelagency.model.Hotel;
 import vml.travelagency.model.Room;
-import vml.travelagency.model.RoomNumber;
 import vml.travelagency.model.User;
 import vml.travelagency.service.BookingPeriodService;
 import vml.travelagency.service.CountryService;
 import vml.travelagency.service.HotelService;
-import vml.travelagency.service.RoomNumberService;
 import vml.travelagency.service.RoomService;
 import vml.travelagency.service.UserService;
 
@@ -47,7 +44,6 @@ public class HotelController {
     private final HotelService hotelService;
     private final RoomService roomService;
     private final BookingPeriodService bookingService;
-    private final RoomNumberService roomNumberService;
     private final UserService userService;
 
     @PreAuthorize("hasAuthority('MANAGER')")
@@ -105,7 +101,7 @@ public class HotelController {
         User user = userService.getByEmail(userEmail);
 
         Hotel hotel = hotelService.getByHotelName(requestDto.getHotelName());
-        RoomNumber roomNumber = roomNumberService.getByNumber(requestDto.getRoomNumber());
+        Long roomNumber = requestDto.getRoomNumber();
         Room room = roomService.getByHotelAndRoomNumber(hotel, roomNumber);
         List<BookingPeriod> bookingPeriods = bookingService.getAllByRoom(room);
         boolean isAvailable = roomService

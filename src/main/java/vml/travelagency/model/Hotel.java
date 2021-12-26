@@ -41,10 +41,4 @@ public class Hotel {
 
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;
-
-    @ManyToMany
-    @JoinTable(name = "user_hotel",
-            joinColumns = @JoinColumn(name = "hotel_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
 }
