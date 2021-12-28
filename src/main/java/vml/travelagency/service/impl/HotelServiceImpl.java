@@ -2,6 +2,7 @@ package vml.travelagency.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vml.travelagency.exceptions.NullEntityReferenceException;
 import vml.travelagency.exceptions.NullMethodParameterException;
 import vml.travelagency.exceptions.RoomNumberAlreadyExistException;
@@ -17,6 +18,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepo hotelRepo;

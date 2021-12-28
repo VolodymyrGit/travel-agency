@@ -1,6 +1,5 @@
 package vml.travelagency.security;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        log.info("JwtFilter is running");
+        log.info("doFilterInternal is running");
 
         final String token = getTokenFromRequest(request);
 
@@ -52,6 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        log.info("JWT is 'null'");
         filterChain.doFilter(request, response);
     }
 
@@ -62,11 +62,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 return authString.substring(7);
             }
             log.info("authString didn't start with \"Bearer \"");
-//            filterChain.doFilter(request, response);
             return null;
         }
         log.info("StringUtils.hasText(authString) - failed");
-//        filterChain.doFilter(request, response);
         return null;
     }
 }

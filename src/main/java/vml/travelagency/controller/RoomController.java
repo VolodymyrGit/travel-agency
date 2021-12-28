@@ -12,7 +12,6 @@ import vml.travelagency.dto.request.RoomRequestDto;
 import vml.travelagency.dto.response.RoomResponseDto;
 import vml.travelagency.model.Hotel;
 import vml.travelagency.model.Room;
-import vml.travelagency.model.RoomType;
 import vml.travelagency.service.HotelService;
 import vml.travelagency.service.RoomService;
 

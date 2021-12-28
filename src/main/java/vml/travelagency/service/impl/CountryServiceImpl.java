@@ -3,6 +3,7 @@ package vml.travelagency.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vml.travelagency.dto.request.CountryRequestDto;
 import vml.travelagency.exceptions.NullEntityReferenceException;
 import vml.travelagency.model.Country;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class CountryServiceImpl implements CountryService {
 

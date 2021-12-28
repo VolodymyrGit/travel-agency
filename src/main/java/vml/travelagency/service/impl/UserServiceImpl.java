@@ -3,6 +3,7 @@ package vml.travelagency.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import vml.travelagency.dto.request.RegisterUserRequestDto;
 import vml.travelagency.exceptions.NullEntityReferenceException;
 import vml.travelagency.model.User;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
